@@ -23,4 +23,4 @@ jobs:
         run: |
           rsync -acvrW --numeric-ids --delete --exclude=".git" --human-readable \
            -e "ssh -T -o Compression=no -x"\
-           ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/root/rsync/
+           ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/root/nocompression/
