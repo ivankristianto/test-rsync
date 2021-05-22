@@ -1,0 +1,22 @@
+name: deploy-with-rsync
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-rsyncer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEPLOY_KEY }} 
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+      
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+      
+      - name: Deploy to ivankristianto.com
+        run: rsync -acvrW --numeric-ids --delete  --human-readable ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/root/rsync/

@@ -1,0 +1,22 @@
+name: deploy-with-rsyncer
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-rsyncer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to ivankristianto.com
+        uses: Pendect/action-rsyncer@v1.1.0
+        env:
+          DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
+        with:
+          flags: '-acvzrW --numeric-ids --delete --human-readable'
+          options: ''
+          ssh_options: '-T'
+          src: './'
+          dest: '${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/root/rsyncer/'
+
