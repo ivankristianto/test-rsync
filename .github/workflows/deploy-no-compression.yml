@@ -1,4 +1,4 @@
-name: deploy-with-rsync
+name: deploy-with-rsync-no-compression
 
 on:
   push:
@@ -20,4 +20,7 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       
       - name: Deploy to ivankristianto.com
-        run: rsync -aczvrW --numeric-ids --delete --exclude=".git" --human-readable ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/root/rsync/
+        run: |
+          rsync -acvrW --numeric-ids --delete --exclude=".git" --human-readable \
+           -e "ssh -T -o Compression=no -x"\
+           ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/root/rsync/

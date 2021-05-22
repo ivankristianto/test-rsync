@@ -15,7 +15,7 @@ jobs:
         env:
           DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
         with:
-          flags: '-acvzrW --numeric-ids --delete --human-readable'
+          flags: '-acvzrW --numeric-ids --delete --human-readable --exclude=".git"'
           options: ''
           ssh_options: '-T'
           src: './'
